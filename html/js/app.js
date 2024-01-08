@@ -431,7 +431,6 @@ function generateDescription(itemData) {
         // Vitto Chèque
         case "cheque":
             return `<p><strong>Expéditeur :  </strong><span>${itemData.info.exp}</span></p><p><strong>Bénéficiaire : </strong><span>${itemData.info.rec}</span></p><p><strong>Montant : </strong><span>${itemData.info.montant}</span></p><p><strong>Raison : </strong><span>${itemData.info.raison}</span></p>`;
-    }
         //
         default:
             return itemData.description;
@@ -1553,16 +1552,16 @@ var requiredItemOpen = false;
         $(".player-inventory").find(".item-slot").remove();
         $(".ply-hotbar-inventory").find(".item-slot").remove();
 */
-/* Vitto name + ID + cash 
+// Vitto name + ID + cash 
         Inventory.Open = function(data) {
         totalWeight = 0;
         totalWeightOther = 0;
         var v = data
 
-        $('.namejs').html('<i class="fa fa-id-badge"> ID:</i> '+v.pid+' | NAME: '+v.pname+' |  '+'<i class="fas fa-wallet"></i>'+' CASH: $'+v.money)
+        $('.namejs').html('<i class="fa fa-id-badge"> ID :</i> '+v.pid+' | NOM : '+v.pname+' |  '+'<i class="fas fa-wallet"></i>'+' CASH : $'+v.money)
         $(".player-inventory").find(".item-slot").remove();
         $(".ply-hotbar-inventory").find(".item-slot").remove();
-    */
+    //
         if (requiredItemOpen) {
             $(".requiredItem-container").hide();
             requiredItemOpen = false;
