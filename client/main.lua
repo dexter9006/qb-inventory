@@ -444,6 +444,7 @@ RegisterNetEvent('inventory:server:RobPlayer', function(TargetId)
     })
 end)
 
+--[[
 RegisterNetEvent('inventory:client:OpenInventory', function(PlayerAmmo, inventory, other)
     if not IsEntityDead(PlayerPedId()) then
         ToggleHotbar(false)
@@ -459,6 +460,34 @@ RegisterNetEvent('inventory:client:OpenInventory', function(PlayerAmmo, inventor
             maxweight = Config.MaxInventoryWeight,
             Ammo = PlayerAmmo,
             maxammo = Config.MaximumAmmoValues,
+        })
+        inInventory = true
+    end
+end)
+--]]
+-- Vitto name + ID + cash 
+RegisterNetEvent('inventory:client:OpenInventory', function(PlayerAmmo, inventory, other)
+    if not IsEntityDead(PlayerPedId()) then
+        ToggleHotbar(false)
+        SetNuiFocus(true, true)
+        if other then
+            currentOtherInventory = other.name
+        end
+        player = PlayerId()
+        pname = GetPlayerName(player)
+        pid = GetPlayerServerId(player)
+        SendNUIMessage({
+            action = "open",
+            inventory = inventory,
+            slots = Config.MaxInventorySlots,
+            other = other,
+            maxweight = Config.MaxInventoryWeight,
+            Ammo = PlayerAmmo,
+            maxammo = Config.MaximumAmmoValues,
+            pid = pid,
+            money = PlayerData.money['cash'],
+            bank = PlayerData.money['bank'],
+            pname = PlayerData.charinfo.firstname .. ' ' .. PlayerData.charinfo.lastname,
         })
         inInventory = true
     end
