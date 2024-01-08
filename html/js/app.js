@@ -361,7 +361,7 @@ function generateDescription(itemData) {
             <p><strong>Last Name: </strong><span>${itemData.info.lastname}</span></p>
             <p><strong>CSN: </strong><span>${itemData.info.citizenid}</span></p>`;
         case "harness":
-            return `<p>${itemData.info.uses} uses left</p>`;
+            return `<p>${itemData.info.uses} utilisation(s) restante(s)</p>`;
         case "filled_evidence_bag":
             if (itemData.info.type == "casing") {
                 return `<p><strong>Evidence material: </strong><span>${itemData.info.label}</span></p>
@@ -394,6 +394,45 @@ function generateDescription(itemData) {
             return `<p><strong>Card Holder: </strong><span>${itemData.info.name}</span></p>`;
         case "labkey":
             return `<p>Lab: ${itemData.info.lab}</p>`;
+        // Vitto Cigarette Pack
+        case "redwood_pack":
+        case "debonaire_pack":
+        case "yukon_pack":
+            return `<p>${itemData.info.uses} cigarettes restante(s).</p>`;
+        // Vitto cdn-fuel
+        case "syphoningkit":
+            return `<p>A kit used to syphon gasoline from vehicles!<br><br>${itemData.info.gasamount} Liters Inside.</p><p style="padding-top: .8vh;font-size:11px"><b>Weight: </b>${((itemData.weight * itemData.amount) / 1000).toFixed(1)} | <b>Amount: </b>${itemData.amount}</p>`;
+        case "jerrycan":
+            return `<p>A Jerry Can, designed to hold fuel!<br><br>${itemData.info.gasamount} Liters Inside.</p><p style="padding-top: .8vh;font-size:11px"><b>Weight: </b>${((itemData.weight * itemData.amount) / 1000).toFixed(1)} | <b>Amount: </b>${itemData.amount}</p>`;
+        // Vitto kbfw-fakeplates
+        case "license_plate":
+            return `<p>Plate: ${itemData.info.plate}</p>`;
+        // Vitto keep-companion
+        case "keepcompanionhusky":
+        case "keepcompanionrottweiler":
+        case "keepcompanionmtlion":
+        case "keepcompanionmtlion2":
+        case "keepcompanioncat":
+        case "keepcompanionpoodle":
+        case "keepcompanionpug":
+        case "keepcompanionretriever":
+        case "keepcompanionshepherd":
+        case "keepcompanionwesty":
+        case "keepcompanioncoyote":
+        case "keepcompanionrabbit":
+        case "keepcompanionhen":
+            let gender = itemData.info.gender ? "male" : "female";
+            return `<p><strong>Owner Phone: </strong><span>${itemData.info.owner.phone}</span></p><p><strong>Variation: </strong><span>${itemData.info.variation}</span></p><p><strong>Gender: </strong><span>${gender}</span></p><p><strong>Health: </strong><span>${itemData.info.health}</span></p><p><strong>Xp/Max: </strong><span>${itemData.info.XP} / ${maxExp(itemData.info.level)}</span></p><p><strong>Level: </strong><span>${itemData.info.level}</span></p><p><strong>Age: </strong><span>${callAge(itemData.info.age)}</span></p><p><strong>Food: </strong><span>${itemData.info.food}</span></p><p><strong>Thirst: </strong><span>${itemData.info.thirst}</span></p>`;
+        case "petwaterbottleportable":
+            return `<p>capacity (L): ${itemData.info.liter}</p>`;
+        // Vitto Recepissé
+        case "recepisse":
+            return `<p><strong>Expéditeur :  </strong><span>${itemData.info.explab}</span></p><p><strong>Bénéficiaire : ${itemData.info.rec} | (${itemData.info.cid})</strong><span></span></p><p><strong>Montant : $ </strong><span>${itemData.info.montant}</span></p><p><strong>Date : </strong><span>${itemData.info.date}</span></p><p><strong>Raison : </strong><span>${itemData.info.raison}</span></p>`;
+        // Vitto Chèque
+        case "cheque":
+            return `<p><strong>Expéditeur :  </strong><span>${itemData.info.exp}</span></p><p><strong>Bénéficiaire : </strong><span>${itemData.info.rec}</span></p><p><strong>Montant : </strong><span>${itemData.info.montant}</span></p><p><strong>Raison : </strong><span>${itemData.info.raison}</span></p>`;
+    }
+        //
         default:
             return itemData.description;
     }
@@ -1506,14 +1545,24 @@ var requiredItemOpen = false;
             }
         }
     };
-
+/* Vitto
     Inventory.Open = function (data) {
         totalWeight = 0;
         totalWeightOther = 0;
 
         $(".player-inventory").find(".item-slot").remove();
         $(".ply-hotbar-inventory").find(".item-slot").remove();
+*/
+/* Vitto name + ID + cash 
+        Inventory.Open = function(data) {
+        totalWeight = 0;
+        totalWeightOther = 0;
+        var v = data
 
+        $('.namejs').html('<i class="fa fa-id-badge"> ID:</i> '+v.pid+' | NAME: '+v.pname+' |  '+'<i class="fas fa-wallet"></i>'+' CASH: $'+v.money)
+        $(".player-inventory").find(".item-slot").remove();
+        $(".ply-hotbar-inventory").find(".item-slot").remove();
+    */
         if (requiredItemOpen) {
             $(".requiredItem-container").hide();
             requiredItemOpen = false;
@@ -1793,7 +1842,7 @@ var requiredItemOpen = false;
     Inventory.UseItem = function (data) {
         $(".itembox-container").hide();
         $(".itembox-container").fadeIn(250);
-        $("#itembox-action").html("<p>Used</p>");
+        $("#itembox-action").html("<p>Utilisé</p>");
         $("#itembox-label").html("<p>" + data.item.label + "</p>");
         $("#itembox-image").html('<div class="item-slot-img"><img src="images/' + data.item.image + '" alt="' + data.item.name + '" /></div>');
         setTimeout(function () {
@@ -1808,11 +1857,11 @@ var requiredItemOpen = false;
         if (itemBoxtimer !== null) {
             clearTimeout(itemBoxtimer);
         }
-        var type = "Used";
+        var type = "Utilisé";
         if (data.type == "add") {
-            type = "Received";
+            type = "Reçu";
         } else if (data.type == "remove") {
-            type = "Removed";
+            type = "Supprimé";
         }
         var itemboxHTML = '<div class="item-slot"><div class="item-slot-amount"><p>' + type + '</p></div><div class="item-slot-label"><p>' + data.item.label + '</p></div><div class="item-slot-img"><img src="images/' + data.item.image + '" alt="' + data.item.name + '" /></div></div>';
         var $itembox = $(itemboxHTML);
@@ -1913,3 +1962,39 @@ $("#item-give").droppable({
         );
     },
 });
+
+// Vitto keep-companion
+function callAge(age) {
+    let max = 0;
+    let min = 0;
+    if (age === 0) {
+      return 0;
+    }
+    for (let index = 1; index < 10; index++) {
+      max = 60 * 60 * 24 * index;
+      min = 60 * 60 * 24 * (index - 1);
+      if (age >= min && age <= max) {
+        return index - 1;
+      }
+    }
+  }
+
+  function maxExp(level) {
+    let xp = Math.floor(
+      (1 / 4) * Math.floor((level + 300) * Math.pow(2, level / 7))
+    );
+    return xp;
+  }
+
+  function currentLvlExp(xp) {
+    let maxExp = 0;
+    let minExp = 0;
+
+    for (let index = 0; index <= 50; index++) {
+      maxExp = Math.floor(Math.floor((i + 300) * (2 ^ (i / 7))) / 4);
+      minExp = Math.floor(Math.floor((i - 1 + 300) * (2 ^ ((i - 1) / 7))) / 4);
+      if (xp >= minExp && xp <= maxExp) {
+        return i;
+      }
+    }
+  }
