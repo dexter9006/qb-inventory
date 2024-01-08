@@ -10,6 +10,8 @@
         <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
         <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js" integrity="sha256-xH4q8N0pEzrZMaRmd7gQVcTZiFei+HfRTBPJ1OGXC0k=" crossorigin="anonymous"></script>
     </head>
+    
+    <!-- Vitto
     <body>
         <div id="qbcore-inventory">
             <div class="inventory-info">
@@ -17,6 +19,16 @@
                     <span id="player-inv-label">Player Inventory</span>
                     <span id="player-inv-weight-value">0</span>
                 </div>
+    
+    Vitto name + ID + cash -->     
+    <!-- <body style="background-color: rgba(0, 0, 0, 0); font-family: 'Roboto', fantasy !important;"> -->
+    <body>
+        <div id="qbcore-inventory">
+            <div class="inventory-info">
+                <div class="player-inv-info">
+                    <span class="namejs" id="player-inv-label">Player</span><br>
+                    <span id="player-inv-weight"></span>
+    <!-- -->
                 <div id="player-inv-progressbar"></div>
                 <div class="other-inv-info">
                     <span id="other-inv-label"></span>
@@ -30,10 +42,10 @@
                 </div>
                 <div class="inv-options">
                     <div class="inv-options-list">
-                        <input type="number" id="item-amount" class="inv-option-item" min=1 max="10000" placeholder="Amount" pattern="[0-9]" onfocus="this.value=''" placeholder="" oninput="validity.valid||(value='');"></input>
-                        <div class="inv-option-item" id="item-use"><p>USE</p></div>
-                        <div class="inv-option-item" id="item-give"><p>GIVE</p></div>
-                        <div class="inv-option-item" id="inv-close"><p>CLOSE</p></div>
+                        <input type="number" id="item-amount" class="inv-option-item" min=1 max="10000" placeholder="Quantité" pattern="[0-9]" onfocus="this.value=''" placeholder="" oninput="validity.valid||(value='');"></input>
+                        <div class="inv-option-item" id="item-use"><p>UTILISER</p></div>
+                        <div class="inv-option-item" id="item-give"><p>DONNER</p></div>
+                        <div class="inv-option-item" id="inv-close"><p>FERMER</p></div>
                     </div>
                 </div>
                 <div class="oth-inv-container">
@@ -58,11 +70,11 @@
             <div class="weapon-attachments">
             </div>
             <div class="weapon-attachments-remove"><i class="fas fa-trash"></i></div>
-            <div class="weapon-attachments-back"><p>RETURN</p></div>
+            <div class="weapon-attachments-back"><p>RETOUR</p></div>
         </div>
         <div class="combine-option-container">
-            <div class="inv-option-item CombineItem"><p>Combine</p></div>
-            <div class="inv-option-item SwitchItem"><p>Switch</p></div>
+            <div class="inv-option-item CombineItem"><p>COMBINER</p></div>
+            <div class="inv-option-item SwitchItem"><p>SWITCH</p></div>
         </div>
         <div class="itemboxes-container"></div>
         <div class="requiredItem-container"></div>
