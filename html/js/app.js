@@ -431,7 +431,15 @@ function generateDescription(itemData) {
         // Vitto Chèque
         case "cheque":
             return `<p><strong>Expéditeur :  </strong><span>${itemData.info.exp}</span></p><p><strong>Bénéficiaire : </strong><span>${itemData.info.rec}</span></p><p><strong>Montant : </strong><span>${itemData.info.montant}</span></p><p><strong>Raison : </strong><span>${itemData.info.raison}</span></p>`;
-        //
+        // Vitto ps-mdt
+        case "mdtcitation":
+            return `<p>${itemData.label}</p>
+            <p><strong>Citizen ID: </strong><span>${itemData.info.citizenId}</span></p>
+            <p><strong>Fine: </strong><span>${itemData.info.fine}</span></p>
+            <p><strong>Citation Date: </strong><span>${itemData.info.date}</span></p>
+            <p><strong>Incident ID: </strong><span>${itemData.info.incidentId}</span></p>
+            <p><strong>Involved Officer: </strong><span>${itemData.info.officer}</span></p>`;
+            //
         default:
             return itemData.description;
     }
