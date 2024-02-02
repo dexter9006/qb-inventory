@@ -657,7 +657,7 @@ function updateProgressBar(totalWeight, playerMaxWeight) {
         .removeClass("ui-progressbar-medium ui-progressbar-high")
         .addClass(progressBarClass);
 
-    $("#player-inv-weight-value").text(totalWeight / 1000 + "/" + playerMaxWeight / 1000);
+    $("#player-inv-weight-value").text(totalWeight / 1000 + "/" + playerMaxWeight / 1000 + " kg");
 }
 
 function updateOtherProgressBar(totalWeightOther, otherMaxWeight) {
