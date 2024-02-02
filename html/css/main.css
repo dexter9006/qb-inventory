@@ -43,7 +43,7 @@ input[type="number"]::-webkit-outer-spin-button {
 
 .player-inv-info {
     position: absolute;
-    top: 23%;
+    top: 22.3%;
     left: 14.1%;
     width: 28%;
     height: fit-content;
@@ -53,16 +53,17 @@ input[type="number"]::-webkit-outer-spin-button {
     display: flex;
     flex-direction: row;
     align-items: flex-start;
-    padding: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     justify-content: space-between;
     align-items: center;
 }
 
 #player-inv-progressbar {
-    height: 5px;
-    top: 25.5%;
-    left: 14.2%;
-    width: 27.8%;
+    height: 6.5px;
+    top: 0%;
+    left: 0%;
+    width: 100%;
     position: absolute;
     transition: width 0.2s;
     background-color: #2d2d2d;
@@ -70,7 +71,7 @@ input[type="number"]::-webkit-outer-spin-button {
 
 .other-inv-info {
     position: absolute;
-    top: 23%;
+    top: 22.3%;
     right: 14.3%;
     width: 28%;
     height: fit-content;
@@ -80,17 +81,18 @@ input[type="number"]::-webkit-outer-spin-button {
     display: flex;
     flex-direction: row;
     align-items: flex-start;
-    padding: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     justify-content: space-between;
     align-items: center;
 }
 
 #other-inv-progressbar {
+    height: 6.5px;
+    top: 0%;
+    left: 0%;
+    width: 100%;
     position: absolute;
-    top: 25.5%;
-    width: 27.8%;
-    right: 14.4%;
-    height: 5px;
     transition: width 0.2s;
     background-color: #2d2d2d;
 }
@@ -200,7 +202,7 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 .item-slot-amount {
-    font-size: var(--font-size);
+    font-size: 11px;
     color: white;
     position: absolute;
     top: 5px;
@@ -215,7 +217,7 @@ input[type="number"]::-webkit-outer-spin-button {
     position: absolute;
     white-space: nowrap;
     bottom: 0;
-    height: 1vh;
+    height: 1.6vh;
     width: 100%;
     background-color: var(--background-color);
     display: flex;
@@ -225,7 +227,7 @@ input[type="number"]::-webkit-outer-spin-button {
 
 .item-slot-label p {
     margin: 0;
-    font-size: var(--font-size);
+    font-size: 8px;
     text-transform: uppercase;
     color: var(--text-color);
     font-weight: bolder;
