@@ -488,7 +488,7 @@ RegisterNetEvent('inventory:client:OpenInventory', function(PlayerAmmo, inventor
             maxweight = Config.MaxInventoryWeight,
             Ammo = PlayerAmmo,
             maxammo = Config.MaximumAmmoValues,
-            --pid = pid,
+            pid = pid,
             money = PlayerData.money['cash'],
             bank = PlayerData.money['bank'],
             pname = PlayerData.charinfo.firstname .. ' ' .. PlayerData.charinfo.lastname,
