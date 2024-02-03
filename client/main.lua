@@ -478,8 +478,8 @@ RegisterNetEvent('inventory:client:OpenInventory', function(PlayerAmmo, inventor
             currentOtherInventory = other.name
         end
         player = PlayerId()
-        local pname = GetPlayerName(player)
-        local pid = GetPlayerServerId(player)
+        pname = GetPlayerName(player)
+        pid = GetPlayerServerId(player)
         SendNUIMessage({
             action = "open",
             inventory = inventory,
