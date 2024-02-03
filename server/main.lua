@@ -1410,6 +1410,16 @@ RegisterNetEvent('inventory:server:CraftItems', function(itemName, itemCosts, am
 	TriggerClientEvent('inventory:client:UpdatePlayerInventory', src, false)
 end)
 
+-- Vitto keep-companion
+exports ('getTruck', function (id)
+	return Trunks[id]
+end)
+
+exports ('getGloveboxes', function(id)
+	return Gloveboxes [id]
+end)
+--
+
 RegisterNetEvent('inventory:server:CraftAttachment', function(itemName, itemCosts, amount, toSlot, points)
 	local src = source
 	local Player = QBCore.Functions.GetPlayer(src)
@@ -1425,16 +1435,6 @@ RegisterNetEvent('inventory:server:CraftAttachment', function(itemName, itemCost
 	Player.Functions.SetMetaData('attachmentcraftingrep', Player.PlayerData.metadata['attachmentcraftingrep'] + (points * amount))
 	TriggerClientEvent('inventory:client:UpdatePlayerInventory', src, false)
 end)
-
--- Vitto keep-companion
-exports ('getTruck', function (id)
-	return Trunks[id]
-end)
-
-exports ('getGloveboxes', function(id)
-	return Gloveboxes [id]
-end)
---
 
 RegisterNetEvent('inventory:server:SetIsOpenState', function(IsOpen, type, id)
 	if IsOpen then return end
@@ -2181,7 +2181,7 @@ RegisterNetEvent('inventory:server:SetInventoryData', function(fromInventory, to
 			TriggerClientEvent('inventory:client:UpdatePlayerInventory', src, true)
 			QBCore.Functions.Notify(src, Lang:t('notify.noitem'), 'error')
 		end
-	-- Vitto ps-mdt
+		-- Vitto ps-mdt
 	elseif QBCore.Shared.SplitStr(shopType, "_")[1] == "Itemshop" then
 		if Player.Functions.RemoveMoney("cash", price, "itemshop-bought-item") then
 			if QBCore.Shared.SplitStr(itemData.name, "_")[1] == "weapon" then
@@ -2299,16 +2299,13 @@ RegisterServerEvent('inventory:server:GiveItem', function(target, name, amount, 
 		if RemoveItem(src, item.name, amount, item.slot) then
 			if AddItem(target, item.name, amount, false, item.info) then
 				TriggerClientEvent('inventory:client:ItemBox', target, QBCore.Shared.Items[item.name], 'add')
-				--QBCore.Functions.Notify(target, Lang:t('notify.gitemrec') .. amount .. ' ' .. item.label .. Lang:t('notify.gitemfrom') .. Player.PlayerData.charinfo.firstname .. ' ' .. Player.PlayerData.charinfo.lastname)
 				-- Vitto ID au lieu du nom dans la notif give
 				QBCore.Functions.Notify(target, Lang:t("notify.gitemrec")..amount..' '..item.label..Lang:t("notify.gitemfrom")..' ID : '.." "..Player.PlayerData.cid)
-				--
 				TriggerClientEvent('inventory:client:UpdatePlayerInventory', target, true)
 				TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items[item.name], 'remove')
-				--QBCore.Functions.Notify(src, Lang:t('notify.gitemyg') .. OtherPlayer.PlayerData.charinfo.firstname .. ' ' .. OtherPlayer.PlayerData.charinfo.lastname .. ' ' .. amount .. ' ' .. item.label .. '!')
 				-- Vitto ID au lieu du nom dans la notif give
 				QBCore.Functions.Notify(src, Lang:t("notify.gitemyg") .. 'ID : ' ..OtherPlayer.PlayerData.cid.." | " .. amount .. " " .. item.label .."!")
-				--
+				--				
 				TriggerClientEvent('inventory:client:UpdatePlayerInventory', src, true)
 				TriggerClientEvent('qb-inventory:client:giveAnim', src)
 				TriggerClientEvent('qb-inventory:client:giveAnim', target)
