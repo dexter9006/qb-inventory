@@ -1410,16 +1410,6 @@ RegisterNetEvent('inventory:server:CraftItems', function(itemName, itemCosts, am
 	TriggerClientEvent('inventory:client:UpdatePlayerInventory', src, false)
 end)
 
--- Vitto keep-companion
-exports ('getTruck', function (id)
-	return Trunks[id]
-end)
-
-exports ('getGloveboxes', function(id)
-	return Gloveboxes [id]
-end)
---
-
 RegisterNetEvent('inventory:server:CraftAttachment', function(itemName, itemCosts, amount, toSlot, points)
 	local src = source
 	local Player = QBCore.Functions.GetPlayer(src)
@@ -2181,45 +2171,6 @@ RegisterNetEvent('inventory:server:SetInventoryData', function(fromInventory, to
 			TriggerClientEvent('inventory:client:UpdatePlayerInventory', src, true)
 			QBCore.Functions.Notify(src, Lang:t('notify.noitem'), 'error')
 		end
-		-- Vitto ps-mdt
-	elseif QBCore.Shared.SplitStr(shopType, "_")[1] == "Itemshop" then
-		if Player.Functions.RemoveMoney("cash", price, "itemshop-bought-item") then
-			if QBCore.Shared.SplitStr(itemData.name, "_")[1] == "weapon" then
-				itemData.info.serie = tostring(QBCore.Shared.RandomInt(2) .. QBCore.Shared.RandomStr(3) .. QBCore.Shared.RandomInt(1) .. QBCore.Shared.RandomStr(2) .. QBCore.Shared.RandomInt(3) .. QBCore.Shared.RandomStr(4))
-				itemData.info.quality = 100
-			end
-			local serial = itemData.info.serie
-			local imageurl = ("https://cfx-nui-qb-inventory/html/images/%s.png"):format(itemData.name)
-			local notes = "Purchased at Ammunation"
-			local owner = Player.PlayerData.charinfo.firstname .. " " .. Player.PlayerData.charinfo.lastname
-			local weapClass = 1
-			local weapModel = QBCore.Shared.Items[itemData.name].label
-			AddItem(src, itemData.name, fromAmount, toSlot, itemData.info)
-			TriggerClientEvent('qb-shops:client:UpdateShop', src, QBCore.Shared.SplitStr(shopType, "_")[2], itemData, fromAmount)
-			QBCore.Functions.Notify(src, itemInfo["label"] .. " bought!", "success")
-			exports['ps-mdt']:CreateWeaponInfo(serial, imageurl, notes, owner, weapClass, weapModel)
-			TriggerEvent("qb-log:server:CreateLog", "shops", "Shop item bought", "green", "**"..GetPlayerName(src) .. "** bought a " .. itemInfo["label"] .. " for $"..price)
-		elseif bankBalance >= price then
-			Player.Functions.RemoveMoney("bank", price, "itemshop-bought-item")
-			if QBCore.Shared.SplitStr(itemData.name, "_")[1] == "weapon" then
-				itemData.info.serie = tostring(QBCore.Shared.RandomInt(2) .. QBCore.Shared.RandomStr(3) .. QBCore.Shared.RandomInt(1) .. QBCore.Shared.RandomStr(2) .. QBCore.Shared.RandomInt(3) .. QBCore.Shared.RandomStr(4))
-				itemData.info.quality = 100
-			end
-			local serial = itemData.info.serie
-			local imageurl = ("https://cfx-nui-qb-inventory/html/images/%s.png"):format(itemData.name)
-			local notes = "Purchased at Ammunation"
-			local owner = Player.PlayerData.charinfo.firstname .. " " .. Player.PlayerData.charinfo.lastname
-			local weapClass = 1
-			local weapModel = QBCore.Shared.Items[itemData.name].label
-			AddItem(src, itemData.name, fromAmount, toSlot, itemData.info)
-			TriggerClientEvent('qb-shops:client:UpdateShop', src, QBCore.Shared.SplitStr(shopType, "_")[2], itemData, fromAmount)
-			QBCore.Functions.Notify(src, itemInfo["label"] .. " bought!", "success")
-			exports['ps-mdt']:CreateWeaponInfo(serial, imageurl, notes, owner, weapClass, weapModel)
-			TriggerEvent("qb-log:server:CreateLog", "shops", "Shop item bought", "green", "**"..GetPlayerName(src) .. "** bought a " .. itemInfo["label"] .. " for $"..price)
-		else
-			QBCore.Functions.Notify(src, "You don't have enough cash..", "error")
-		end
-	--
 	else
 		-- drop
 		fromInventory = tonumber(fromInventory)
@@ -2299,13 +2250,10 @@ RegisterServerEvent('inventory:server:GiveItem', function(target, name, amount, 
 		if RemoveItem(src, item.name, amount, item.slot) then
 			if AddItem(target, item.name, amount, false, item.info) then
 				TriggerClientEvent('inventory:client:ItemBox', target, QBCore.Shared.Items[item.name], 'add')
-				-- Vitto ID au lieu du nom dans la notif give
-				QBCore.Functions.Notify(target, Lang:t("notify.gitemrec")..amount..' '..item.label..Lang:t("notify.gitemfrom")..' ID : '.." "..Player.PlayerData.cid)
+				QBCore.Functions.Notify(target, Lang:t('notify.gitemrec') .. amount .. ' ' .. item.label .. Lang:t('notify.gitemfrom') .. Player.PlayerData.charinfo.firstname .. ' ' .. Player.PlayerData.charinfo.lastname)
 				TriggerClientEvent('inventory:client:UpdatePlayerInventory', target, true)
 				TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items[item.name], 'remove')
-				-- Vitto ID au lieu du nom dans la notif give
-				QBCore.Functions.Notify(src, Lang:t("notify.gitemyg") .. 'ID : ' ..OtherPlayer.PlayerData.cid.." | " .. amount .. " " .. item.label .."!")
-				--				
+				QBCore.Functions.Notify(src, Lang:t('notify.gitemyg') .. OtherPlayer.PlayerData.charinfo.firstname .. ' ' .. OtherPlayer.PlayerData.charinfo.lastname .. ' ' .. amount .. ' ' .. item.label .. '!')
 				TriggerClientEvent('inventory:client:UpdatePlayerInventory', src, true)
 				TriggerClientEvent('qb-inventory:client:giveAnim', src)
 				TriggerClientEvent('qb-inventory:client:giveAnim', target)
@@ -2444,25 +2392,6 @@ QBCore.Commands.Add('giveitem', 'Give An Item (Admin Only)', { { name = 'id', he
 				amount = 1
 				info.serie = tostring(QBCore.Shared.RandomInt(2) .. QBCore.Shared.RandomStr(3) .. QBCore.Shared.RandomInt(1) .. QBCore.Shared.RandomStr(2) .. QBCore.Shared.RandomInt(3) .. QBCore.Shared.RandomStr(4))
 				info.quality = 100
-			-- Vitto cigarettes
-			elseif itemData["name"] == "redwood_pack" then
-				info.uses = 10
-			elseif itemData["name"] == "debonaire_pack" then
-				info.uses = 10
-			elseif itemData["name"] == "yukon_pack" then
-				info.uses = 10
-			-- Vitto cdn-fuel
-			elseif itemData["name"] == "syphoningkit" then
-				info.gasamount = 0
-			elseif itemData["name"] == "jerrycan" then
-				info.gasamount = 0
-			-- Vitto kbfw-fakeplates
-			elseif itemData["name"] == "license_plate" then
-				info.plate = tostring(QBCore.Shared.RandomInt(2) .. QBCore.Shared.RandomStr(2) .. QBCore.Shared.RandomInt(2) .. QBCore.Shared.RandomStr(2))
-			-- Vitto keep-companion
-			elseif itemData["name"] == "petwaterbottleportable" then
-				info.liter = 0
-			--
 			elseif itemData['name'] == 'harness' then
 				info.uses = 20
 			elseif itemData['name'] == 'markedbills' then
