@@ -439,7 +439,13 @@ function generateDescription(itemData) {
             <p><strong>Citation Date: </strong><span>${itemData.info.date}</span></p>
             <p><strong>Incident ID: </strong><span>${itemData.info.incidentId}</span></p>
             <p><strong>Involved Officer: </strong><span>${itemData.info.officer}</span></p>`;
-            //
+        // Vitto carrentals
+        case "rentalpapers":
+            return `<p><strong>Name: </strong><span>${itemData.info.firstname}</span></p>
+            <p><strong>Last Name: </strong><span>${itemData.info.lastname}</span></p>
+            <p><strong>Plate: </strong><span>${itemData.info.plate}</span></p>
+            <p><strong>Model: </strong></p>`;
+        //
         default:
             let itemDescr = itemData.description;
 	    if (itemData.info.costs != undefined && itemData.info.costs != null) itemDescr += `<p><strong>ITEMS NEEDED:</strong> <span>${itemData.info.costs}</span></p>`;
