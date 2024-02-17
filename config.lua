@@ -2,7 +2,7 @@ Config = {}
 
 Config.UseTarget = GetConvar('UseTarget', 'false') == 'true' -- Use qb-target interactions (don't change this, go to your server.cfg and add `setr UseTarget true` to use this and just that from true to false or the other way around)
 
-Config.MaxInventoryWeight = 100 * 1000                       -- Max weight a player can carry (default 120kg, written in grams)
+Config.MaxInventoryWeight = 60 * 1000                       -- Max weight a player can carry (default 120kg, written in grams)
 Config.MaxInventorySlots = 41                                -- Max inventory slots for a player
 
 Config.KeyBinds = {
@@ -136,6 +136,16 @@ Config.CraftingItems = {
         costs = {
             ['metalscrap'] = 30,
             ['plastic'] = 42,
+        },
+    },
+    {
+        name = 'syphoningkit',
+        amount = 50,
+        threshold = 0,
+        points = 2,
+        costs = {
+            ['iron'] = 10,
+            ['plastic'] = 35,
         },
     },
     {
