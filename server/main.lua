@@ -172,8 +172,13 @@ local function AddItem(source, item, amount, slot, info)
 	end
 	if (totalWeight + (itemInfo['weight'] * amount)) <= Config.MaxInventoryWeight then
 		if (slot and Player.PlayerData.items[slot]) and (Player.PlayerData.items[slot].name:lower() == item:lower()) and (itemInfo['type'] == 'item' and not itemInfo['unique']) then
+			--print('1')
 			Player.PlayerData.items[slot].amount = Player.PlayerData.items[slot].amount + amount
+			if Player.PlayerData.items[slot].name == 'cash' then
+				--print('add cash') Player.PlayerData.money['cash'] = Player.PlayerData.money['cash'] + amount
+			end
 			Player.Functions.SetPlayerData('items', Player.PlayerData.items)
+			Player.Functions.SetPlayerData('money', Player.PlayerData.money)
 
 			if Player.Offline then return true end
 
@@ -181,15 +186,20 @@ local function AddItem(source, item, amount, slot, info)
 
 			return true
 		elseif not itemInfo['unique'] and slot or slot and Player.PlayerData.items[slot] == nil then
+			--print('2')
 			Player.PlayerData.items[slot] = { name = itemInfo['name'], amount = amount, info = info or '', label = itemInfo['label'], description = itemInfo['description'] or '', weight = itemInfo['weight'], type = itemInfo['type'], unique = itemInfo['unique'], useable = itemInfo['useable'], image = itemInfo['image'], shouldClose = itemInfo['shouldClose'], slot = slot, combinable = itemInfo['combinable'] }
 			Player.Functions.SetPlayerData('items', Player.PlayerData.items)
-
+			if Player.PlayerData.items[slot].name == 'cash' then
+				--print('add cash') Player.PlayerData.money['cash'] = Player.PlayerData.money['cash'] + amount
+			end
+			Player.Functions.SetPlayerData('money', Player.PlayerData.money)
 			if Player.Offline then return true end
 
 			TriggerEvent('qb-log:server:CreateLog', 'playerinventory', 'AddItem', 'green', '**' .. GetPlayerName(source) .. ' (citizenid: ' .. Player.PlayerData.citizenid .. ' | id: ' .. source .. ')** got item: [slot:' .. slot .. '], itemname: ' .. Player.PlayerData.items[slot].name .. ', added amount: ' .. amount .. ', new total amount: ' .. Player.PlayerData.items[slot].amount)
 
 			return true
 		elseif itemInfo['unique'] or (not slot or slot == nil) or itemInfo['type'] == 'weapon' then
+			--print('3')
 			for i = 1, Config.MaxInventorySlots, 1 do
 				if Player.PlayerData.items[i] == nil then
 					Player.PlayerData.items[i] = { name = itemInfo['name'], amount = amount, info = info or '', label = itemInfo['label'], description = itemInfo['description'] or '', weight = itemInfo['weight'], type = itemInfo['type'], unique = itemInfo['unique'], useable = itemInfo['useable'], image = itemInfo['image'], shouldClose = itemInfo['shouldClose'], slot = i, combinable = itemInfo['combinable'] }
@@ -231,18 +241,25 @@ local function RemoveItem(source, item, amount, slot)
 			return false
 		end
 		if Player.PlayerData.items[slot].amount > amount then
-			Player.PlayerData.items[slot].amount = Player.PlayerData.items[slot].amount - amount
-			Player.Functions.SetPlayerData('items', Player.PlayerData.items)
 
+			Player.PlayerData.items[slot].amount = Player.PlayerData.items[slot].amount - amount
+			if Player.PlayerData.items[slot].name == 'cash' then
+				--print('remove cash slot') Player.PlayerData.money['cash'] = Player.PlayerData.money['cash'] - amount
+			end
+			Player.Functions.SetPlayerData('items', Player.PlayerData.items)
+			Player.Functions.SetPlayerData('money', Player.PlayerData.money)
 			if not Player.Offline then
 				TriggerEvent('qb-log:server:CreateLog', 'playerinventory', 'RemoveItem', 'red', '**' .. GetPlayerName(source) .. ' (citizenid: ' .. Player.PlayerData.citizenid .. ' | id: ' .. source .. ')** lost item: [slot:' .. slot .. '], itemname: ' .. Player.PlayerData.items[slot].name .. ', removed amount: ' .. amount .. ', new total amount: ' .. Player.PlayerData.items[slot].amount)
 			end
 
 			return true
 		elseif Player.PlayerData.items[slot].amount == amount then
+			if Player.PlayerData.items[slot].name == 'cash' then
+				--print('remove cash slot') Player.PlayerData.money['cash'] = Player.PlayerData.money['cash'] - amount
+			end
 			Player.PlayerData.items[slot] = nil
 			Player.Functions.SetPlayerData('items', Player.PlayerData.items)
-
+			Player.Functions.SetPlayerData('money', Player.PlayerData.money)
 			if Player.Offline then return true end
 
 			TriggerEvent('qb-log:server:CreateLog', 'playerinventory', 'RemoveItem', 'red', '**' .. GetPlayerName(source) .. ' (citizenid: ' .. Player.PlayerData.citizenid .. ' | id: ' .. source .. ')** lost item: [slot:' .. slot .. '], itemname: ' .. item .. ', removed amount: ' .. amount .. ', item removed')
@@ -262,7 +279,11 @@ local function RemoveItem(source, item, amount, slot)
 			end
 			if Player.PlayerData.items[_slot].amount > amountToRemove then
 				Player.PlayerData.items[_slot].amount = Player.PlayerData.items[_slot].amount - amountToRemove
+				if Player.PlayerData.items[_slot].name == 'cash' then
+					--print('remove cash slot') Player.PlayerData.money['cash'] = Player.PlayerData.items[slot].amount
+				end
 				Player.Functions.SetPlayerData('items', Player.PlayerData.items)
+				Player.Functions.SetPlayerData('money', Player.PlayerData.money)
 
 				if not Player.Offline then
 					TriggerEvent('qb-log:server:CreateLog', 'playerinventory', 'RemoveItem', 'red', '**' .. GetPlayerName(source) .. ' (citizenid: ' .. Player.PlayerData.citizenid .. ' | id: ' .. source .. ')** lost item: [slot:' .. _slot .. '], itemname: ' .. Player.PlayerData.items[_slot].name .. ', removed amount: ' .. amount .. ', new total amount: ' .. Player.PlayerData.items[_slot].amount)
@@ -270,9 +291,14 @@ local function RemoveItem(source, item, amount, slot)
 
 				return true
 			elseif Player.PlayerData.items[_slot].amount == amountToRemove then
-				Player.PlayerData.items[_slot] = nil
-				Player.Functions.SetPlayerData('items', Player.PlayerData.items)
 
+				if Player.PlayerData.items[_slot].name == 'cash' then --print('remove cash slot')
+					Player.PlayerData.money['cash']
+					 = 0
+					end
+					Player.PlayerData.items[_slot] = nil
+				Player.Functions.SetPlayerData('items', Player.PlayerData.items)
+				Player.Functions.SetPlayerData('money', Player.PlayerData.money)
 				if Player.Offline then return true end
 
 				TriggerEvent('qb-log:server:CreateLog', 'playerinventory', 'RemoveItem', 'red', '**' .. GetPlayerName(source) .. ' (citizenid: ' .. Player.PlayerData.citizenid .. ' | id: ' .. source .. ')** lost item: [slot:' .. _slot .. '], itemname: ' .. item .. ', removed amount: ' .. amount .. ', item removed')
@@ -1369,7 +1395,6 @@ exports('addGloveboxItems', addGloveboxItems)
 
 RegisterNetEvent('inventory:server:combineItem', function(item, fromItem, toItem)
 	local src = source
-
 	-- Check that inputs are not nil
 	-- Most commonly when abusing this exploit, this values are left as
 	if fromItem == nil then return end
@@ -2281,14 +2306,21 @@ RegisterServerEvent('inventory:server:GiveItem', function(target, name, amount, 
 		end
 		if RemoveItem(src, item.name, amount, item.slot) then
 			if AddItem(target, item.name, amount, false, item.info) then
+				if item.name == 'cash' then
+					Player.PlayerData.money['cash'] = Player.PlayerData.money['cash'] - amount
+					OtherPlayer.PlayerData.money['cash'] = OtherPlayer.PlayerData.money['cash'] + amount
+				end
+				--print(Player.PlayerData.money['cash'], OtherPlayer.PlayerData.money['cash'])
 				TriggerClientEvent('inventory:client:ItemBox', target, QBCore.Shared.Items[item.name], 'add')
 				-- Vitto ID au lieu du nom dans la notif give
 				QBCore.Functions.Notify(target, Lang:t("notify.gitemrec")..amount..' '..item.label..Lang:t("notify.gitemfrom")..' ID : '.." "..Player.PlayerData.cid)
+				TriggerClientEvent('QBCore:Player:UpdatePlayerData', src)
+				TriggerClientEvent('QBCore:Player:UpdatePlayerData', target)
 				TriggerClientEvent('inventory:client:UpdatePlayerInventory', target, true)
 				TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items[item.name], 'remove')
 				-- Vitto ID au lieu du nom dans la notif give
 				QBCore.Functions.Notify(src, Lang:t("notify.gitemyg") .. 'ID : ' ..OtherPlayer.PlayerData.cid.." | " .. amount .. " " .. item.label .."!")
-				--				
+				--
 				TriggerClientEvent('inventory:client:UpdatePlayerInventory', src, true)
 				TriggerClientEvent('qb-inventory:client:giveAnim', src)
 				TriggerClientEvent('qb-inventory:client:giveAnim', target)
